@@ -6,6 +6,6 @@
 #ifndef GRAFO_H_
 #define GRAFO_H_
 
-
+void cabecalho(int menu);    
 
 #endif
