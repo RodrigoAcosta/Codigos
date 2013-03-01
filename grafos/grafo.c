@@ -28,3 +28,22 @@ void cabecalho(int menu){
    }
 
 }
+
+void print_nomes(NOME_VERTICES nodo[],int tamanho){
+
+   int i;
+    
+   /*for(i=0;i<(vertices*vertices);i++){*/
+   for(i=0;i<(tamanho);i++){
+      printf("Indice - %d - Nome - %s\n",i,nodo[i].nome);      
+   }
+}
+
+void init_nome(NOME_VERTICES nodo[],int tamanho){
+  
+   int i;
+   
+   for(i=0;i<(tamanho);i++){
+       nodo[i].ini=0;                                                   /*0 - ainda nao foi inicializado*/
+   }
+}

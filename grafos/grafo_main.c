@@ -24,7 +24,7 @@ int main()
    
    do{
 	cabecalho(1);
-    scanf("%s",entrada);
+	scanf("%s",entrada);
 	
 	if(strcmp(entrada,"*Quit")==0){ 
 	  printf("Algoritmo encerrado.\n");
@@ -74,9 +74,6 @@ int main()
 	  }
 	}
    
-   
-   
-   
     switch(code){
    
       case -4:
@@ -98,8 +95,17 @@ int main()
            break;
       case 1:   														/* *Vertices*/
            if(vertices>0){
+			  NOME_VERTICES nodos[vertices];                            /*guarda o nome de cada vertices da matriz de adjacencia*/
+			  init_nome(nodos,vertices);
+			  MATRIZ grafo[vertices][vertices];
+			  /*inicializar o a matriz grafo*/
+			  for(j=0;j<vertices;j++){
+			     for(i=0;i<vertices;i++){
+                    grafo[j][i].conexo=0; 
+			      }
+              }			  
+			  /*fim do inicializar o a matriz grafo*/
 			  i=-1;
-			  getchar();
 			  do{
 			    i++;  													/*percorre todos o vertices do grafo*/
 			    j=-1;
@@ -118,28 +124,54 @@ int main()
 				  aux[j]='\0';
 				  indice=atoi(aux);
 				  k=0;
+				  j+=2;
 				  while(j<tamanho){
 				     aux[k]=string[j];
 				     j++;
 				     k++;
 				  }
-				  aux[k]='\0';
+				  aux[k-1]='\0';
 				  strcpy(nome,aux);
-                } 
-			    /*tratar o nome*/
-			 }while((i<(vertices*vertices))&&(strcmp(string,"*Edges")!=0)&&(strcmp(string,"*Arcs")!=0));
-		    /* getchar();*/
-		     if(i>=(vertices*vertices)){
+                  if(indice<(vertices)){
+                    strcpy(nodos[indice].nome,nome);  				/*linha*/
+                    nodos[indice].ini=1;
+                  }
+			      else{
+				    printf("Indice superior ao maior indice na matriz de adjacencia.\n");
+					i--;										 		/*para poder mexer na mesma posicao*/
+				  }
+				} 
+			 }while((i<(vertices))&&(strcmp(string,"*Edges")!=0)&&(strcmp(string,"*Arcs")!=0));
+		     if(i>=(vertices)){
 		        printf("A Matriz de Adjacencia do grafo ja esta completa.\n");
-		     }
-		     vertices_ok=1;
+	         }
+		     else{  													/*foi *Arcs ou *Edges*/
+			   printf("Encerrado a insercao de vertices.\n");
+			 }
+			 vertices_ok=1;
 		   }
 		   else{
 		     printf("Erro.Numero minimo de 1 vertice nao atingido.\n");
+		     vertices_ok=0;
 		   }
            break;
-      case 2:															/* *Edges*/		
+      case 2:															/* *Edges - arestas nao direcionadas*/		
            printf("*Edges.\n");
+          /*while()*/
+           
+           
+           
+           
+           
+           
+           
+           
+           
+           
+           
+           
+           
+           
            arestas_ok=1;
            break;     
      case 3:															/* *Arcs*/		
@@ -159,7 +191,6 @@ int main()
     }
    sleep(2);
    printf("\33[H\33[2J");
-   getchar();
    }while(code!=0);
 
 
