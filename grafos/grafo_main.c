@@ -6,26 +6,20 @@
 
 int main()
 {
-   int vertices=0,vertices_ok=0;
-   int arestas_ok=0;
+   int vertices=0,vertices_ok=0,arestas_ok=0;
    int code=0;
-   int i=0;	
+   int i=0,j=0,k=0;	                                                    /*percorre string*/
+   int indice=0,tamanho=0;
+  /* int saida=0,chegada=0,peso=0;*/
+   char nome[255];
+   char aux[255];
    char entrada[255];
    char string[255];
-   int tamanho=0;
- /*  int saida=0;
-   int chegada=0;
-   int peso=0;*/
-   int indice=0;
-   char nome[255];
-   int j=0;  															/*percorre string*/
-   char aux[255];
-   int k;
    
    do{
 	cabecalho(1);
 	scanf("%s",entrada);
-	
+menu:	
 	if(strcmp(entrada,"*Quit")==0){ 
 	  printf("Algoritmo encerrado.\n");
       exit(0);
@@ -149,6 +143,16 @@ int main()
 			   printf("Encerrado a insercao de vertices.\n");
 			 }
 			 vertices_ok=1;
+			 if(strcmp(string,"*Edges")==0){
+			    strcpy(entrada,"*Edges");
+			    goto menu;   											/*burlar a lida da instrucao a ser executada e manda a *Edges*/
+		     }
+			 else{
+               if(strcmp(string,"*Arcs")==0){
+			      strcpy(entrada,"*Arcs");                           
+			      goto menu;                                            /*burlar a lida da instrucao a ser executada e manda a *Arcs*/
+		       }  			 
+			 }
 		   }
 		   else{
 		     printf("Erro.Numero minimo de 1 vertice nao atingido.\n");
@@ -157,20 +161,23 @@ int main()
            break;
       case 2:															/* *Edges - arestas nao direcionadas*/		
            printf("*Edges.\n");
-          /*while()*/
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
+           do{
+			 j=-1;
+			 do{   					 								    /*ateh dar enter*/  
+			   j++;
+			   scanf("%c",&string[j]);
+			 }while(string[j]!='\n');	
+			 string[j]='\0'; 										    /*fim*/
+			 tamanho=strlen(string);
+			 if(string[0]!='*'){                                        /*tratar entrada para nao ser um comando no grafo*/ 
+                /*fazer metodo para separa em campos a string*/
+                
+                printf("string - %s\n",string);		      
+		      } 
+           }while(strcmp(string,"*Queries")!=0);
+		   
+		   
+		   printf("Encerrado a insercao de Arestas Nao-Direcionadas.\n");
            
            arestas_ok=1;
            break;     
