@@ -25,7 +25,10 @@ typedef struct matriz{
 /*ex: na diagonal principal se o vertice esta conectado a si mesmo quer dizer que ele eh valido e que foi inicializado com um nome*/
 
 void cabecalho(int menu);  
-void print_nomes(NOME_VERTICES nodo[],int tamanho);  
-void init_nome(NOME_VERTICES nodo[],int tamanho);
+void print_nomes(const NOME_VERTICES nodo[],int tamanho);                     /*mandar para a tela todos os vertices existentes*/
+void init_nome(NOME_VERTICES nodo[],int tamanho);                       /*iniciar o nome dos vertices*/
+void separa_string(char string[],int *v1,int *v2,int *peso);            /*separa o que eh v1,v2 e peso da string lida*/  
+int validar(int num,int n_vertices,const int nodo);              /*ver se esta dentro dos valores possiveis 0<=i<=n-1*/
+
 
 #endif

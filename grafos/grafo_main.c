@@ -7,19 +7,23 @@
 int main()
 {
    int vertices=0,vertices_ok=0,arestas_ok=0;
-   int code=0;
+   int code=0,valido_1=0,valido_2=0;
    int i=0,j=0,k=0;	                                                    /*percorre string*/
    int indice=0,tamanho=0;
-  /* int saida=0,chegada=0,peso=0;*/
+   int v1=0,v2=0,peso=0;
    char nome[255];
    char aux[255];
    char entrada[255];
    char string[255];
+  
+   NOME_VERTICES nodos[vertices];                                       
+   init_nome(nodos,vertices);
+   MATRIZ grafo[vertices][vertices];
    
+  
    do{
 	cabecalho(1);
 	scanf("%s",entrada);
-menu:	
 	if(strcmp(entrada,"*Quit")==0){ 
 	  printf("Algoritmo encerrado.\n");
       exit(0);
@@ -27,12 +31,18 @@ menu:
     if(strcmp(entrada,"*Vertices")==0){
 	   scanf("%d",&vertices);
 	   if(vertices_ok!=1){
-		 code=1;
+		 /*estruturas iniciais que contem 0 posicoes pq tem que serem globais se nao diz que nao foi definido*/
+		 /*ao mexer nos diversos case's do switch*/
+		 NOME_VERTICES nodos[vertices];                            /*guarda o nome de cada vertices da matriz de adjacencia*/
+         init_nome(nodos,vertices);
+         MATRIZ grafo[vertices][vertices];
+         code=1;
 	   }
 	   else{  															/*mensagem de que o grafo ja tem vertices inicializados*/
 	      code=-2;
 	   }
 	}
+menu:	
     if(strcmp(entrada,"*Edges")==0){
 	   if(vertices_ok!=0){
 	     if(arestas_ok!=1){
@@ -89,16 +99,6 @@ menu:
            break;
       case 1:   														/* *Vertices*/
            if(vertices>0){
-			  NOME_VERTICES nodos[vertices];                            /*guarda o nome de cada vertices da matriz de adjacencia*/
-			  init_nome(nodos,vertices);
-			  MATRIZ grafo[vertices][vertices];
-			  /*inicializar o a matriz grafo*/
-			  for(j=0;j<vertices;j++){
-			     for(i=0;i<vertices;i++){
-                    grafo[j][i].conexo=0; 
-			      }
-              }			  
-			  /*fim do inicializar o a matriz grafo*/
 			  i=-1;
 			  do{
 			    i++;  													/*percorre todos o vertices do grafo*/
@@ -127,7 +127,7 @@ menu:
 				  aux[k-1]='\0';
 				  strcpy(nome,aux);
                   if(indice<(vertices)){
-                    strcpy(nodos[indice].nome,nome);  				/*linha*/
+                    strcpy(nodos[indice].nome,nome);  				    /*linha*/
                     nodos[indice].ini=1;
                   }
 			      else{
@@ -140,15 +140,17 @@ menu:
 		        printf("A Matriz de Adjacencia do grafo ja esta completa.\n");
 	         }
 		     else{  													/*foi *Arcs ou *Edges*/
-			   printf("Encerrado a insercao de vertices.\n");
+			   printf("Encerrado a insercao de vertices.");
 			 }
 			 vertices_ok=1;
 			 if(strcmp(string,"*Edges")==0){
+				printf("Iniciando a insercao de arestas Nao-Direcionadas.Padrao: V1 V2 PESO\n"); 
 			    strcpy(entrada,"*Edges");
 			    goto menu;   											/*burlar a lida da instrucao a ser executada e manda a *Edges*/
 		     }
 			 else{
                if(strcmp(string,"*Arcs")==0){
+			      printf("Iniciando a insercao de arestas Direcionadas.Padrao: V1 V2 PESO\n");
 			      strcpy(entrada,"*Arcs");                           
 			      goto menu;                                            /*burlar a lida da instrucao a ser executada e manda a *Arcs*/
 		       }  			 
@@ -160,8 +162,15 @@ menu:
 		   }
            break;
       case 2:															/* *Edges - arestas nao direcionadas*/		
-           printf("*Edges.\n");
-           do{
+            /*inicializar o a matriz grafo*/
+			for(j=0;j<vertices;j++){
+			  for(i=0;i<vertices;i++){
+                 grafo[j][i].conexo=0; 
+                 grafo[j][i].peso=-1;                                /*peso nao valido, para dizer que nao foi inicializado*/
+			   }
+            }			  
+			/*fim do inicializar o a matriz grafo*/
+			do{
 			 j=-1;
 			 do{   					 								    /*ateh dar enter*/  
 			   j++;
@@ -170,15 +179,35 @@ menu:
 			 string[j]='\0'; 										    /*fim*/
 			 tamanho=strlen(string);
 			 if(string[0]!='*'){                                        /*tratar entrada para nao ser um comando no grafo*/ 
-                /*fazer metodo para separa em campos a string*/
-                
-                printf("string - %s\n",string);		      
-		      } 
+                valido_1=0;
+                valido_2=0;
+                separa_string(string,&v1,&v2,&peso);
+                valido_1=validar(v1,vertices,nodos[v1].ini);  			/*retorna 1 se v1 eh valido*/
+                valido_2=validar(v2,vertices,nodos[v2].ini);   			/*retorna 1 se v2 eh valido*/
+				if((valido_1==1)&&(valido_2==1)){       				/*soh nessas condicoes eh que pode setar na matriz de adjacencia*/  
+				   grafo[v1][v2].conexo=1;                              
+                   grafo[v1][v2].peso=peso;                              
+                   grafo[v2][v1].conexo=1;                              				      	
+                   grafo[v2][v1].peso=peso;
+                }
+              }
+              else{
+			    if(strcmp(string,"*Queries")!=0){
+				   printf("Instrucao nao suportada dentro da instrucao *Edges.\n");
+				}
+			  } 
            }while(strcmp(string,"*Queries")!=0);
-		   
-		   
 		   printf("Encerrado a insercao de Arestas Nao-Direcionadas.\n");
-           
+           printf("\n");
+             print_nomes(nodos,vertices);
+             for(j=0;j<vertices;j++){ 
+               for(i=0;i<(vertices);i++){  /*mostrar a matriz de adjacencia que gerou*/
+			     if(grafo[j][i].conexo==1){
+			       printf("grafo[%d][%d].peso-%d\n",j,i,grafo[j][i].peso);
+			     }
+			   } 
+             } 
+           printf("\n");
            arestas_ok=1;
            break;     
      case 3:															/* *Arcs*/		
@@ -201,10 +230,5 @@ menu:
    }while(code!=0);
 
 
-
-
-
-
-
-   return 0;
+ return 0;
 }
