@@ -15,10 +15,8 @@ int main()
    char aux[255];
    char entrada[255];
    char string[255];
-  
-   NOME_VERTICES nodos[vertices];                                       
-   init_nome(nodos,vertices);
-   MATRIZ grafo[vertices][vertices];
+   NOME_VERTICES *nodos;                                       
+   MATRIZ **grafo;
    
   
    do{
@@ -31,12 +29,13 @@ int main()
     if(strcmp(entrada,"*Vertices")==0){
 	   scanf("%d",&vertices);
 	   if(vertices_ok!=1){
-		 /*estruturas iniciais que contem 0 posicoes pq tem que serem globais se nao diz que nao foi definido*/
-		 /*ao mexer nos diversos case's do switch*/
-		 NOME_VERTICES nodos[vertices];                            /*guarda o nome de cada vertices da matriz de adjacencia*/
+		 nodos=malloc(vertices*sizeof(NOME_VERTICES));
          init_nome(nodos,vertices);
-         MATRIZ grafo[vertices][vertices];
-         code=1;
+         grafo=malloc(vertices*sizeof(MATRIZ));
+         for(i=0;i<vertices;i++){
+              grafo[i]=malloc(vertices*sizeof(MATRIZ));
+		 }
+		code=1;
 	   }
 	   else{  															/*mensagem de que o grafo ja tem vertices inicializados*/
 	      code=-2;
@@ -202,9 +201,7 @@ menu:
              print_nomes(nodos,vertices);
              for(j=0;j<vertices;j++){ 
                for(i=0;i<(vertices);i++){  /*mostrar a matriz de adjacencia que gerou*/
-			     if(grafo[j][i].conexo==1){
-			       printf("grafo[%d][%d].peso-%d\n",j,i,grafo[j][i].peso);
-			     }
+			      printf("grafo[%d][%d].peso-%d\n",j,i,grafo[j][i].peso);
 			   } 
              } 
            printf("\n");
