@@ -197,18 +197,43 @@ menu:
 			  } 
            }while(strcmp(string,"*Queries")!=0);
 		   printf("Encerrado a insercao de Arestas Nao-Direcionadas.\n");
-           printf("\n");
-             print_nomes(nodos,vertices);
-             for(j=0;j<vertices;j++){ 
-               for(i=0;i<(vertices);i++){  /*mostrar a matriz de adjacencia que gerou*/
-			      printf("grafo[%d][%d].peso-%d\n",j,i,grafo[j][i].peso);
-			   } 
-             } 
-           printf("\n");
            arestas_ok=1;
            break;     
      case 3:															/* *Arcs*/		
-           printf("*Arcs.\n");
+           /*inicializar o a matriz grafo*/
+			for(j=0;j<vertices;j++){
+			  for(i=0;i<vertices;i++){
+                 grafo[j][i].conexo=0; 
+                 grafo[j][i].peso=-1;                                   /*peso nao valido, para dizer que nao foi inicializado*/
+			   }
+            }			  
+			/*fim do inicializar o a matriz grafo*/
+			do{
+			 j=-1;
+			 do{   					 								    /*ateh dar enter*/  
+			   j++;
+			   scanf("%c",&string[j]);
+			 }while(string[j]!='\n');	
+			 string[j]='\0'; 										    /*fim*/
+			 tamanho=strlen(string);
+			 if(string[0]!='*'){                                        /*tratar entrada para nao ser um comando no grafo*/ 
+                valido_1=0;
+                valido_2=0;
+                separa_string(string,&v1,&v2,&peso);
+                valido_1=validar(v1,vertices,nodos[v1].ini);  			/*retorna 1 se v1 eh valido*/
+                valido_2=validar(v2,vertices,nodos[v2].ini);   			/*retorna 1 se v2 eh valido*/
+				if((valido_1==1)&&(valido_2==1)){       				/*soh nessas condicoes eh que pode setar na matriz de adjacencia*/  
+				   grafo[v1][v2].conexo=1;                              
+                   grafo[v1][v2].peso=peso;                              
+                }
+              }
+              else{
+			    if(strcmp(string,"*Queries")!=0){
+				   printf("Instrucao nao suportada dentro da instrucao *Arcs.\n");
+				}
+			  } 
+           }while(strcmp(string,"*Queries")!=0);
+		   printf("Encerrado a insercao de Arestas Direcionadas.\n");
            arestas_ok=1;
            break;     
      case 4:															/* *Queries*/		
