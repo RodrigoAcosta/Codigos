@@ -1,0 +1,5 @@
+BUGS:
+
+-na lida da informaçoes para cada vertice em:
+id "nome"; se eu tirar as aspas("") apenas ele comera a primeira e a ultima letra do nome e continuara a execução; 
+

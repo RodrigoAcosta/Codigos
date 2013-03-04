@@ -7,7 +7,8 @@
 int main()
 {
    int vertices=0,vertices_ok=0,arestas_ok=0;
-   int code=0,valido_1=0,valido_2=0;
+   int code=0,valido_1=0,valido_2=0,resposta=0;
+   int id=-1;
    int i=0,j=0,k=0;	                                                    /*percorre string*/
    int indice=0,tamanho=0;
    int v1=0,v2=0,peso=0;
@@ -197,7 +198,9 @@ menu:
 			  } 
            }while(strcmp(string,"*Queries")!=0);
 		   printf("Encerrado a insercao de Arestas Nao-Direcionadas.\n");
-           arestas_ok=1;
+		   arestas_ok=1;
+           strcpy(entrada,"*Queries");
+           goto menu;
            break;     
      case 3:															/* *Arcs*/		
            /*inicializar o a matriz grafo*/
@@ -234,16 +237,47 @@ menu:
 			  } 
            }while(strcmp(string,"*Queries")!=0);
 		   printf("Encerrado a insercao de Arestas Direcionadas.\n");
-           arestas_ok=1;
+		   arestas_ok=1;
+		   strcpy(entrada,"*Queries");
+		   goto menu;
            break;     
      case 4:															/* *Queries*/		
-           printf("*Queries.\n");
+           /*IF'S NAO ENCADEADOS PELO MOTIVO DE FICAR ILEGIVEL. POR ISSO TERA DE TESTAR TODAS AS OPCOES SEMPRE QUE EXECUTAR*/
+           sleep(2);
+           printf("\33[H\33[2J");
+           do{
+             cabecalho(2);
+             scanf("%s",entrada);
+             /*NAO TA LENDO COM ESPACOS*/
+             strcpy(string,entrada);   									/*salvar a string*/
+             if(strcmp(entrada,"*Quit")==0){ 
+		       printf("Algoritmo encerrado.\n");
+               exit(0);
+             }
+             if(strstr(entrada,"get")){	 
+				printf("string- %s\n",string);
+				resposta=0;
+		        id=separa_id(string);
+		        printf("id saiu - %d\n",id);
+		        resposta=get_ID(id,nome,nodos,vertices);
+		        printf("nome - %s\n",nome);
+		        if(resposta==1){
+				   printf("\"{\"vertice\":{\"ID\":%d, \"dado\":\"%s\", \"resposta\":\"sucesso\"}}",id,nome);
+				}
+				else{
+				   printf("{\"vertice\":{\"ID\":%d, \"dado\":\"%s\", \"resposta\":\"falha\"}}",id,nome);
+				}
+		     }
+          
+          
+          
+           sleep(2);
+           printf("\33[H\33[2J");
+           }while(1);
            break;          
-     
-   
-      default:
+     default:
            printf("Instrucao nao implementada.\n");
-           code=5;  /*modificar no menu*/
+           code=5;  													/*modificar no menu*/
            break;
        
     }
