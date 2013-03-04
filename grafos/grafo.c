@@ -140,8 +140,6 @@ int separa_id(char string[]){
       i++;   
    }
    aux[j]='\0';  														/*fim string*/
-   printf("aux - %s\n",aux);
-   getchar();
    numero=atoi(aux);
    
    return numero;

@@ -247,32 +247,31 @@ menu:
            printf("\33[H\33[2J");
            do{
              cabecalho(2);
-             scanf("%s",entrada);
-             /*NAO TA LENDO COM ESPACOS*/
-             strcpy(string,entrada);   									/*salvar a string*/
+             j=-1;
+			 do{   					 								    /*ateh dar enter*/  
+			   j++;
+			   scanf("%c",&entrada[j]);
+			 }while(entrada[j]!='\n');	
+			 entrada[j]='\0'; 										    /*fim*/        
+             
              if(strcmp(entrada,"*Quit")==0){ 
 		       printf("Algoritmo encerrado.\n");
                exit(0);
              }
              if(strstr(entrada,"get")){	 
-				printf("string- %s\n",string);
 				resposta=0;
-		        id=separa_id(string);
-		        printf("id saiu - %d\n",id);
+		        id=separa_id(entrada);
 		        resposta=get_ID(id,nome,nodos,vertices);
-		        printf("nome - %s\n",nome);
 		        if(resposta==1){
-				   printf("\"{\"vertice\":{\"ID\":%d, \"dado\":\"%s\", \"resposta\":\"sucesso\"}}",id,nome);
+				   printf("\"{\"vertice\":{\"ID\":%d, \"dado\":\"%s\", \"resposta\":\"sucesso\"}}\n",id,nome);
 				}
 				else{
-				   printf("{\"vertice\":{\"ID\":%d, \"dado\":\"%s\", \"resposta\":\"falha\"}}",id,nome);
+				   printf("{\"vertice\":{\"ID\":%d, \"dado\":\"%s\", \"resposta\":\"falha\"}}\n",id,nome);
 				}
 		     }
           
-          
-          
-           sleep(2);
-           printf("\33[H\33[2J");
+             sleep(2);
+             printf("\33[H\33[2J");
            }while(1);
            break;          
      default:
