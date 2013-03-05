@@ -166,11 +166,16 @@ menu:
 			for(j=0;j<vertices;j++){
 			  for(i=0;i<vertices;i++){
                  grafo[j][i].conexo=0; 
-                 grafo[j][i].peso=-1;                                /*peso nao valido, para dizer que nao foi inicializado*/
-			   }
+                 grafo[j][i].peso=pow(2,-15);                           /*peso nao valido, para dizer que nao foi inicializado*/
+               }
             }			  
+            for(j=0;j<vertices;j++){
+              if(nodos[j].ini==1){                                      /*um nodo da matriz sempre eh conexo a si mesmo*/
+			    grafo[j][j].conexo=1;
+			  }
+			}  
 			/*fim do inicializar o a matriz grafo*/
-			do{
+		   do{
 			 j=-1;
 			 do{   					 								    /*ateh dar enter*/  
 			   j++;
@@ -205,11 +210,19 @@ menu:
      case 3:															/* *Arcs*/		
            /*inicializar o a matriz grafo*/
 			for(j=0;j<vertices;j++){
+			  if(nodos[j].ini==1){                                      /*um nodo da matriz sempre eh conexo a si mesmo*/
+			    grafo[j][j].conexo=1;
+			  }
 			  for(i=0;i<vertices;i++){
                  grafo[j][i].conexo=0; 
-                 grafo[j][i].peso=-1;                                   /*peso nao valido, para dizer que nao foi inicializado*/
-			   }
-            }			  
+                 grafo[j][i].peso=pow(2,-15);                           /*peso nao valido, para dizer que nao foi inicializado*/
+               }
+            }
+            for(j=0;j<vertices;j++){
+              if(nodos[j].ini==1){                                      /*um nodo da matriz sempre eh conexo a si mesmo*/
+			    grafo[j][j].conexo=1;
+			  }
+			}			  
 			/*fim do inicializar o a matriz grafo*/
 			do{
 			 j=-1;
@@ -269,6 +282,38 @@ menu:
 				   printf("{\"vertice\":{\"ID\":%d, \"dado\":\"%s\", \"resposta\":\"falha\"}}\n",id,nome);
 				}
 		     }
+		     if(strstr(entrada,"delete")){
+				resposta=0;
+		        printf("antes:\n");
+		        for(i=0;i<vertices;i++){
+			      for(j=0;j<vertices;j++){
+				    printf("grafo[%d][%d].conexo-%d\n",j,i,grafo[j][i].conexo);
+			   	  }
+			    }
+		        for(i=0;i<vertices;i++){
+			      printf("nodos[%d]-ini%d\n",i,nodos[i].ini);
+			    }
+			    printf("\n");
+		        id=separa_id(entrada);
+		        resposta=delete_ID(id,vertices,grafo,nodos); 
+			    if(resposta==1){
+				   printf("{\"delete\":{\"ID\":%d,\"resposta\":\"sucesso\"}}",id);
+				}
+				else{
+				   printf("{\"delete\":{\"ID\":%d,\"resposta\":\"falha\"}}",id);
+				}
+			  printf("depois:\n");
+			  for(i=0;i<vertices;i++){
+			    for(j=0;j<vertices;j++){
+				  printf("grafo[%d][%d].conexo-%d\n",j,i,grafo[j][i].conexo);
+				}
+			  }
+			  for(i=0;i<vertices;i++){
+			     printf("nodos[%d]-ini%d\n",i,nodos[i].ini);
+			  }
+			  
+			 }//fim delete_id
+		     
           
              sleep(2);
              printf("\33[H\33[2J");

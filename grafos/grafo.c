@@ -144,3 +144,31 @@ int separa_id(char string[]){
    
    return numero;
 }
+
+int delete_ID(int id,int tamanho,MATRIZ **nodo,NOME_VERTICES nodos[]){
+
+   int i=0;
+
+   if(nodo[id][id].conexo==1){
+     while(i<tamanho){  												/*percorre toda a coluna*/
+	    nodo[id][i].conexo=0;                                           /*desconecta noh e fica como ele nao existindo*/ 
+	    nodo[id][i].peso=pow(2,-15);
+	    i++;
+	 } 
+	 i=0;
+	 while(i<tamanho){  												/*percorre toda a linha*/
+	    nodo[i][id].conexo=0;                                           /*desconecta noh e fica como ele nao existindo*/ 
+	    nodo[i][id].peso=pow(2,-15);
+	    i++;
+	 }
+	 nodos[id].ini=0;
+	 nodos[id].nome[0]='\0'; 
+	 return 1;
+    }
+   
+   
+   
+   return 0;
+
+
+}
