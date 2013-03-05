@@ -145,11 +145,41 @@ int separa_id(char string[]){
    return numero;
 }
 
+void separa_id_id(char string[],int *id1,int *id2){
+
+   int i=0,j=0;
+   int numero=-1;
+   char aux[255];
+   
+   while((string[i]!=' ')&&(string[i]!='\0')){   						/*va que nao ponha a id, gera um loop infinito*/
+      i++;
+   }
+   i++; 																/*pula o especo e o resto eh a ID*/
+   while(string[i]!=' '){
+      aux[j]=string[i];
+      j++;
+      i++;   
+   }
+   aux[j]='\0';  														/*fim string*/
+   *id1=atoi(aux);
+   j=0;
+   i++;
+   while((string[i]!='\n')&&(string[i]!='\0')){
+      aux[j]=string[i];
+      j++;
+      i++;   
+   }
+   aux[j]='\0';
+   *id2=atoi(aux);
+   
+}
+
 int delete_ID(int id,int tamanho,MATRIZ **nodo,NOME_VERTICES nodos[]){
 
    int i=0;
-
-   if(nodo[id][id].conexo==1){
+   
+   if(id<tamanho){
+    if(nodo[id][id].conexo==1){
      while(i<tamanho){  												/*percorre toda a coluna*/
 	    nodo[id][i].conexo=0;                                           /*desconecta noh e fica como ele nao existindo*/ 
 	    nodo[id][i].peso=pow(2,-15);
@@ -165,10 +195,43 @@ int delete_ID(int id,int tamanho,MATRIZ **nodo,NOME_VERTICES nodos[]){
 	 nodos[id].nome[0]='\0'; 
 	 return 1;
     }
-   
-   
-   
+   } 
    return 0;
-
-
 }
+
+int vizinhos_ID(int id,int tamanho,MATRIZ **nodo,char string[]){            
+  
+  int i=0;
+  char buffer [255];
+  
+  string[0]='\0'; 
+  if(id<tamanho){
+	if(nodo[id][id].conexo==1){                                           /*ver se existe o ID*/
+     i=0;
+     while(i<tamanho){
+	    if(nodo[id][i].conexo==1){
+		   snprintf(buffer, 10,"%d",i);
+		   strcat(string,buffer);
+		   strcat(string,",");
+		}
+		i++;
+	 }
+	 i=strlen(string);
+	 i--;
+	 string[i]='\0';
+	
+    return 1;
+	}
+  }	
+  return 0;
+}
+
+int conexao(int id1,int id2,int tamanho,MATRIZ **nodo){
+
+  if((id1<tamanho)&&(id2<tamanho)){
+     if(nodo[id1][id2].conexo==1){
+	   return 1;
+	 }
+  }
+  return 0;
+} 

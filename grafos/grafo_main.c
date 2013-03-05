@@ -138,7 +138,7 @@ menu:
 			 }while((i<(vertices))&&(strcmp(string,"*Edges")!=0)&&(strcmp(string,"*Arcs")!=0));
 		     if(i>=(vertices)){
 		        printf("A Matriz de Adjacencia do grafo ja esta completa.\n");
-	         }
+		     }
 		     else{  													/*foi *Arcs ou *Edges*/
 			   printf("Encerrado a insercao de vertices.");
 			 }
@@ -175,6 +175,7 @@ menu:
 			  }
 			}  
 			/*fim do inicializar o a matriz grafo*/
+		   getchar();
 		   do{
 			 j=-1;
 			 do{   					 								    /*ateh dar enter*/  
@@ -224,6 +225,7 @@ menu:
 			  }
 			}			  
 			/*fim do inicializar o a matriz grafo*/
+			getchar();
 			do{
 			 j=-1;
 			 do{   					 								    /*ateh dar enter*/  
@@ -256,17 +258,17 @@ menu:
            break;     
      case 4:															/* *Queries*/		
            /*IF'S NAO ENCADEADOS PELO MOTIVO DE FICAR ILEGIVEL. POR ISSO TERA DE TESTAR TODAS AS OPCOES SEMPRE QUE EXECUTAR*/
+           /*TEM QUE TRATAR PARA VER DE TER NO MINIMO X TERMOS*/
            sleep(2);
            printf("\33[H\33[2J");
            do{
              cabecalho(2);
              j=-1;
-			 do{   					 								    /*ateh dar enter*/  
+             do{   					 								    /*ateh dar enter*/  
 			   j++;
-			   scanf("%c",&entrada[j]);
+			    scanf("%c",&entrada[j]);
 			 }while(entrada[j]!='\n');	
 			 entrada[j]='\0'; 										    /*fim*/        
-             
              if(strcmp(entrada,"*Quit")==0){ 
 		       printf("Algoritmo encerrado.\n");
                exit(0);
@@ -284,16 +286,6 @@ menu:
 		     }
 		     if(strstr(entrada,"delete")){
 				resposta=0;
-		        printf("antes:\n");
-		        for(i=0;i<vertices;i++){
-			      for(j=0;j<vertices;j++){
-				    printf("grafo[%d][%d].conexo-%d\n",j,i,grafo[j][i].conexo);
-			   	  }
-			    }
-		        for(i=0;i<vertices;i++){
-			      printf("nodos[%d]-ini%d\n",i,nodos[i].ini);
-			    }
-			    printf("\n");
 		        id=separa_id(entrada);
 		        resposta=delete_ID(id,vertices,grafo,nodos); 
 			    if(resposta==1){
@@ -302,18 +294,36 @@ menu:
 				else{
 				   printf("{\"delete\":{\"ID\":%d,\"resposta\":\"falha\"}}",id);
 				}
-			  printf("depois:\n");
-			  for(i=0;i<vertices;i++){
-			    for(j=0;j<vertices;j++){
-				  printf("grafo[%d][%d].conexo-%d\n",j,i,grafo[j][i].conexo);
-				}
-			  }
-			  for(i=0;i<vertices;i++){
-			     printf("nodos[%d]-ini%d\n",i,nodos[i].ini);
-			  }
-			  
 			 }//fim delete_id
-		     
+		      
+		     if(strstr(entrada,"vizinhos")){    
+                resposta=0;
+		        id=separa_id(entrada);
+		        resposta=vizinhos_ID(id,vertices,grafo,string);
+		        if(resposta==1){
+				   printf("{\"vizinhos\":{\"ID\":%d, \"resposta\":\"sucesso\", \"vizinhos\":[%s]}}",id,string);
+				}
+				else{
+				   printf("{\"vizinhos\":{\"ID\":%d, \"resposta\":\"falha\", \"vizinhos\":[]}}",id);
+				}
+		     }//fim vizinhos
+             if(strstr(entrada,"conexao")){
+			    resposta=0;
+		        separa_id_id(entrada,&v1,&v2);
+		        resposta=conexao(v1,v2,vertices,grafo);
+			    if(resposta==1){
+				   printf("{\"conexao\":{\"ID1\":%d, \"ID2\":%d, \"resposta\":\"sucesso\", \"conexao\":\"sim\"}}",v1,v2);
+				}
+				else{
+				   printf("{\"conexao\":{\"ID1\":%d, \"ID2\":%d, \"resposta\":\"falha\", \"conexao\":\"\"}}",v1,v2);
+				}
+			 
+			 
+			 }//fim conexo
+          
+          
+          
+          
           
              sleep(2);
              printf("\33[H\33[2J");

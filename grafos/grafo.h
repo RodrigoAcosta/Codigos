@@ -32,7 +32,10 @@ void separa_string(char string[],int *v1,int *v2,int *peso);            /*separa
 int validar(int num,int n_vertices,const int nodo);              		/*ver se esta dentro dos valores possiveis 0<=i<=n-1*/
 int get_ID(int id,char nome[],const NOME_VERTICES nodo[],int tamanho);	/*char nome[] passado por default mas o usuario nao precisa digitar*/
 int separa_id(char string[]);											/*devolve o id continua na string get id*/
+void separa_id_id(char string[],int *id1,int *id2);
 int delete_ID(int id,int tamanho,MATRIZ **nodo,NOME_VERTICES nodos[]);
-
+int vizinhos_ID(int id,int tamanho,MATRIZ **nodo,char string[]);        /*devolve string a ser impressa com todos os vizinhos*/
+int conexao(int id1,int id2,int tamanho,MATRIZ **nodo);
+ 
 
 #endif
