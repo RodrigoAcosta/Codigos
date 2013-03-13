@@ -18,19 +18,22 @@ int main()
    char string[255];
    NOME_VERTICES *nodos;                                       
    MATRIZ **grafo;
+   LISTA_ADJACENCIA *lista;
    
   
    do{
 	cabecalho(1);
 	scanf("%s",entrada);
-	if(strcmp(entrada,"*Quit")==0){ 
-	  printf("Algoritmo encerrado.\n");
-      exit(0);
+	if(strcmp(entrada,"@")==0){ 
+	  exit(0);
     }
     if(strcmp(entrada,"*Vertices")==0){
 	   scanf("%d",&vertices);
 	   if(vertices_ok!=1){
 		 nodos=malloc(vertices*sizeof(NOME_VERTICES));
+		 /*declaracao lista adjacencia*/ 
+		 lista=malloc(vertices*sizeof(LISTA_ADJACENCIA));
+		 
          init_nome(nodos,vertices);
          grafo=malloc(vertices*sizeof(MATRIZ));
          for(i=0;i<vertices;i++){
@@ -136,21 +139,13 @@ menu:
 				  }
 				} 
 			 }while((i<(vertices))&&(strcmp(string,"*Edges")!=0)&&(strcmp(string,"*Arcs")!=0));
-		     if(i>=(vertices)){
-		        printf("A Matriz de Adjacencia do grafo ja esta completa.\n");
-		     }
-		     else{  													/*foi *Arcs ou *Edges*/
-			   printf("Encerrado a insercao de vertices.");
-			 }
-			 vertices_ok=1;
+		     vertices_ok=1;
 			 if(strcmp(string,"*Edges")==0){
-				printf("Iniciando a insercao de arestas Nao-Direcionadas.Padrao: V1 V2 PESO\n"); 
-			    strcpy(entrada,"*Edges");
+				strcpy(entrada,"*Edges");
 			    goto menu;   											/*burlar a lida da instrucao a ser executada e manda a *Edges*/
 		     }
 			 else{
                if(strcmp(string,"*Arcs")==0){
-			      printf("Iniciando a insercao de arestas Direcionadas.Padrao: V1 V2 PESO\n");
 			      strcpy(entrada,"*Arcs");                           
 			      goto menu;                                            /*burlar a lida da instrucao a ser executada e manda a *Arcs*/
 		       }  			 
@@ -175,7 +170,6 @@ menu:
 			  }
 			}  
 			/*fim do inicializar o a matriz grafo*/
-		   getchar();
 		   do{
 			 j=-1;
 			 do{   					 								    /*ateh dar enter*/  
@@ -203,7 +197,6 @@ menu:
 				}
 			  } 
            }while(strcmp(string,"*Queries")!=0);
-		   printf("Encerrado a insercao de Arestas Nao-Direcionadas.\n");
 		   arestas_ok=1;
            strcpy(entrada,"*Queries");
            goto menu;
@@ -225,7 +218,6 @@ menu:
 			  }
 			}			  
 			/*fim do inicializar o a matriz grafo*/
-			getchar();
 			do{
 			 j=-1;
 			 do{   					 								    /*ateh dar enter*/  
@@ -246,12 +238,12 @@ menu:
                 }
               }
               else{
+				printf("entrou2.\n");
 			    if(strcmp(string,"*Queries")!=0){
 				   printf("Instrucao nao suportada dentro da instrucao *Arcs.\n");
 				}
 			  } 
            }while(strcmp(string,"*Queries")!=0);
-		   printf("Encerrado a insercao de Arestas Direcionadas.\n");
 		   arestas_ok=1;
 		   strcpy(entrada,"*Queries");
 		   goto menu;
@@ -269,9 +261,8 @@ menu:
 			    scanf("%c",&entrada[j]);
 			 }while(entrada[j]!='\n');	
 			 entrada[j]='\0'; 										    /*fim*/        
-             if(strcmp(entrada,"*Quit")==0){ 
-		       printf("Algoritmo encerrado.\n");
-               exit(0);
+             if(strcmp(entrada,"@")==0){ 
+		       exit(0);
              }
              if(strstr(entrada,"get")){	 
 				resposta=0;
@@ -295,7 +286,6 @@ menu:
 				   printf("{\"delete\":{\"ID\":%d,\"resposta\":\"falha\"}}",id);
 				}
 			 }//fim delete_id
-		      
 		     if(strstr(entrada,"vizinhos")){    
                 resposta=0;
 		        id=separa_id(entrada);
@@ -317,10 +307,14 @@ menu:
 				else{
 				   printf("{\"conexao\":{\"ID1\":%d, \"ID2\":%d, \"resposta\":\"falha\", \"conexao\":\"\"}}",v1,v2);
 				}
-			 
-			 
 			 }//fim conexo
-          
+             if(strstr(entrada,"ordemtopologica")){
+				resposta=0; 
+				string[0]='\0';
+			    lista=adjacencia(lista,grafo,vertices);
+			    resposta=ordem_t(grafo,lista,nodos,string,vertices);
+			     
+			 }
           
           
           

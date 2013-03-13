@@ -19,6 +19,12 @@ typedef struct matriz{
 	int conexo;                                                         /*1-conectado 0-nao conectado*/
 }MATRIZ;
 
+typedef struct lista_adjacencia{
+	int id;
+	int chegam;	
+}LISTA_ADJACENCIA;
+
+
 /*grafo estrutura grafo[linha][coluna]*/
 /*coluna eh quem tu segue*/
 /*linha que te segue*/
@@ -33,9 +39,11 @@ int validar(int num,int n_vertices,const int nodo);              		/*ver se esta
 int get_ID(int id,char nome[],const NOME_VERTICES nodo[],int tamanho);	/*char nome[] passado por default mas o usuario nao precisa digitar*/
 int separa_id(char string[]);											/*devolve o id continua na string get id*/
 void separa_id_id(char string[],int *id1,int *id2);
-int delete_ID(int id,int tamanho,MATRIZ **nodo,NOME_VERTICES nodos[]);
+int delete_ID(int id,int tamanho,MATRIZ **nodo,NOME_VERTICES nodos[]);  /*deleta um vertice, junto com seus arestas*/
 int vizinhos_ID(int id,int tamanho,MATRIZ **nodo,char string[]);        /*devolve string a ser impressa com todos os vizinhos*/
-int conexao(int id1,int id2,int tamanho,MATRIZ **nodo);
- 
+int conexao(int id1,int id2,int tamanho,MATRIZ **nodo);                 /*verifica uma ligacao doreta entra dois vertices*/
+int ordem_t(MATRIZ **nodo,LISTA_ADJACENCIA *lista,NOME_VERTICES *vet,char string[],int tamanho);/*devolve string com a ordem topologica do grafo*/ 
+LISTA_ADJACENCIA* adjacencia(LISTA_ADJACENCIA *lista,MATRIZ **nodo,int tamanho);/*gera a lista de adjacencia de cada vertice*/
+
 
 #endif

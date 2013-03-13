@@ -3,10 +3,10 @@
 1 "ana"
 2 "sonia"
 3 "ju"
-*Edges
+*Arcs
 0 1 50
 0 3 10
 2 3 100
 *Queries
-conexao 0 1
-*Quit
+ordemtopologica
+@

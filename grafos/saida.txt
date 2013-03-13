@@ -1,0 +1,33 @@
+ ----------------------------------------------------
+|                      *h-HELP | @-quit              |
+|                      Menus Suportados:             |
+|   *Queries   |   *Edges   |   *Arcs  |  *Vertices  |
+ ----------------------------------------------------
+entrou2.
+[H[2J -----------------------------------------------------
+|                       @-Quit                        |
+|               Instrucoes Suportadas:                |
+| get | delete | vizinhos | conexao | ordemtopologica |
+|           arvoreminima  | menorcaminho ID1 ID2      |
+ -----------------------------------------------------
+id do vertice[0] - 0
+chegam no vertice[0]- 2
+id do vertice[1] - 0
+chegam no vertice[1]- 0
+id do vertice[2] - 2
+chegam no vertice[2]- 1
+id do vertice[3] - 0
+chegam no vertice[3]- 0
+id do vertice[4] - 0
+chegam no vertice[4]- 0
+ordem topologica:
+lista.id - 0
+lista.id - 0
+lista.id - 0
+lista.id - 2
+[H[2J -----------------------------------------------------
+|                       @-Quit                        |
+|               Instrucoes Suportadas:                |
+| get | delete | vizinhos | conexao | ordemtopologica |
+|           arvoreminima  | menorcaminho ID1 ID2      |
+ -----------------------------------------------------

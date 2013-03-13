@@ -6,14 +6,14 @@ void cabecalho(int menu){
    
      case 1:
 		printf(" ----------------------------------------------------\n");
-		printf("|                      *h-HELP | *Quit               |\n");
+		printf("|                      *h-HELP | @-quit              |\n");
 		printf("|                      Menus Suportados:             |\n");
 		printf("|   *Queries   |   *Edges   |   *Arcs  |  *Vertices  |\n");
 		printf(" ----------------------------------------------------\n");
 		break;
 	case 2:                                                             
 	    printf(" -----------------------------------------------------\n");
-		printf("|                       *Quit                         |\n");
+		printf("|                       @-Quit                        |\n");
 		printf("|               Instrucoes Suportadas:                |\n");
 		printf("| get | delete | vizinhos | conexao | ordemtopologica |\n"); 
 		printf("|           arvoreminima  | menorcaminho ID1 ID2      |\n");
@@ -148,7 +148,6 @@ int separa_id(char string[]){
 void separa_id_id(char string[],int *id1,int *id2){
 
    int i=0,j=0;
-   int numero=-1;
    char aux[255];
    
    while((string[i]!=' ')&&(string[i]!='\0')){   						/*va que nao ponha a id, gera um loop infinito*/
@@ -235,3 +234,91 @@ int conexao(int id1,int id2,int tamanho,MATRIZ **nodo){
   }
   return 0;
 } 
+
+LISTA_ADJACENCIA* adjacencia(LISTA_ADJACENCIA *lista,MATRIZ **nodo,int tamanho){
+	
+	int i=0,j=0;
+	
+	for(i=0;i<tamanho;i++){
+	   lista[i].id=i;
+	}
+	
+	for(j=0;j<tamanho;j++){
+     for(i=0;i<tamanho;i++){
+        if(i!=j){
+          if(nodo[j][i].conexo==1){
+			lista[i].id=i;
+		    lista[i].chegam+=1;
+		  } 
+         }
+		}	 
+    }  
+    return lista;
+}
+
+int ordem_t(MATRIZ **nodo,LISTA_ADJACENCIA *lista,NOME_VERTICES *vet,char string[],int tamanho){
+
+   int i=0,j=0;
+   MATRIZ **copia;
+   char buffer[255];
+   int aux_id=0,aux_chegam=0;
+      
+   //TEM QUE VER SE NAO POSSUI CICLOS, QUE NAO PODE
+   copia=malloc(tamanho*sizeof(MATRIZ));
+   for(i=0;i<tamanho;i++){
+      copia[i]=malloc(tamanho*sizeof(MATRIZ));
+    }
+   /*copia da matriz para manipulacao*/
+   for(j=0;j<tamanho;j++){
+     for(i=0;i<tamanho;i++){
+	    copia[j][i].conexo=nodo[j][i].conexo;
+	    copia[j][i].peso=nodo[j][i].peso;
+	 }
+   }
+   /*copia da matriz para manipulacao*/
+     
+   for(i=0;i<tamanho;i++){
+	  printf("id do vertice[%d] - %d\n",i,lista[i].id); 
+      printf("chegam no vertice[%d]- %d\n",i,lista[i].chegam);
+   }
+   
+   /*ordenar lsita de adjacencia por ordem topo*/
+   for(j=0;j<tamanho;j++){
+     for(i=0;i<tamanho-1;i++){
+	    if((lista[i].chegam)>(lista[i+1].chegam)){
+		   aux_chegam=lista[i].chegam;  //guardar valor
+		   aux_id=lista[i].id;  //guardar valor
+		   lista[i].id=lista[i+1].id;
+		   lista[i].chegam=lista[i+1].chegam;
+		   lista[i+1].id=aux_id;
+		   lista[i+1].chegam=aux_chegam;		   
+		}
+		if((lista[i].chegam)==(lista[i+1].chegam)){
+		   if((lista[i].id)>(lista[i+1].id)){
+		     aux_chegam=lista[i].chegam;  //guardar valor
+		     aux_id=lista[i].id;  //guardar valor
+		     lista[i].id=lista[i+1].id;
+		     lista[i].chegam=lista[i+1].chegam;
+		     lista[i+1].id=aux_id;
+		     lista[i+1].chegam=aux_chegam;		   
+		   }
+		}
+	 } 
+   }
+   /*ordenar lsita de adjacencia por ordem topo*/
+   printf("ordem topologica:\n");
+   for(i=0;i<tamanho;i++){
+	 if(vet[lista[i].id].ini==1){
+       printf("lista.id - %d\n",lista[i].id);
+     } 
+   }
+   
+   
+   /*string[0]='\0';
+   snprintf(buffer, 10,"%d",i); */
+   
+   
+   
+
+ return 0;
+}
