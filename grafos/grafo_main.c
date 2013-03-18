@@ -12,6 +12,7 @@ int main()
    int i=0,j=0,k=0;	                                                    /*percorre string*/
    int indice=0,tamanho=0;
    int v1=0,v2=0,peso=0;
+   int custo=0;
    char nome[255];
    char aux[255];
    char entrada[255];
@@ -22,7 +23,7 @@ int main()
    
   
    do{
-	cabecalho(1);
+	//cabecalho(1);
 	scanf("%s",entrada);
 	if(strcmp(entrada,"@")==0){ 
 	  exit(0);
@@ -84,21 +85,21 @@ menu:
     switch(code){
    
       case -4:
-           printf("Arestas ja inicializadas.\n");  
+      //     printf("Arestas ja inicializadas.\n");  
            break;
       case -3:
-           printf("Arestas nao inicializadas. Digite '*Edges' ou '*Arcs' para mapear as Arestas.\n");  
+        //   printf("Arestas nao inicializadas. Digite '*Edges' ou '*Arcs' para mapear as Arestas.\n");  
            break;
       case -2:
            if(arestas_ok!=1){
-             printf("Grafo ja inicializado. Digite '*Edges' ou '*Arcs' para mapear as Arestas.\n");  
+          //   printf("Grafo ja inicializado. Digite '*Edges' ou '*Arcs' para mapear as Arestas.\n");  
            }
            else{
-		     printf("Grafo ja inicializado.Arestas ja inicializadas. Selecione uma Operacao a ser realizada no grafo.\n");
+		    // printf("Grafo ja inicializado.Arestas ja inicializadas. Selecione uma Operacao a ser realizada no grafo.\n");
 		   }  
            break;
       case -1:
-           printf("Grafo nao inicializado. Digite inicialmente '*Vertices' e o numero de vertices do grafo.\n");  
+           //printf("Grafo nao inicializado. Digite inicialmente '*Vertices' e o numero de vertices do grafo.\n");  
            break;
       case 1:   														/* *Vertices*/
            if(vertices>0){
@@ -132,14 +133,18 @@ menu:
                   if(indice<(vertices)){
                     strcpy(nodos[indice].nome,nome);  				    /*linha*/
                     nodos[indice].ini=1;
+                    nodos[indice].del=0;                                /*para poder verificar grafo_conexo*/ 
                   }
 			      else{
 				    printf("Indice superior ao maior indice na matriz de adjacencia.\n");
 					i--;										 		/*para poder mexer na mesma posicao*/
 				  }
 				} 
-			 }while((i<(vertices))&&(strcmp(string,"*Edges")!=0)&&(strcmp(string,"*Arcs")!=0));
+			 }while((i<(vertices))&&((strcmp(string,"*Edges")!=0)&&(strcmp(string,"*Arcs")!=0)));
 		     vertices_ok=1;
+			 /*if(i>=vertices){
+			   printf("Grafo com Todas as arestas Inicializadas.\n");
+			 }*/
 			 if(strcmp(string,"*Edges")==0){
 				strcpy(entrada,"*Edges");
 			    goto menu;   											/*burlar a lida da instrucao a ser executada e manda a *Edges*/
@@ -167,6 +172,7 @@ menu:
             for(j=0;j<vertices;j++){
               if(nodos[j].ini==1){                                      /*um nodo da matriz sempre eh conexo a si mesmo*/
 			    grafo[j][j].conexo=1;
+			    
 			  }
 			}  
 			/*fim do inicializar o a matriz grafo*/
@@ -238,8 +244,7 @@ menu:
                 }
               }
               else{
-				printf("entrou2.\n");
-			    if(strcmp(string,"*Queries")!=0){
+				if(strcmp(string,"*Queries")!=0){
 				   printf("Instrucao nao suportada dentro da instrucao *Arcs.\n");
 				}
 			  } 
@@ -251,10 +256,10 @@ menu:
      case 4:															/* *Queries*/		
            /*IF'S NAO ENCADEADOS PELO MOTIVO DE FICAR ILEGIVEL. POR ISSO TERA DE TESTAR TODAS AS OPCOES SEMPRE QUE EXECUTAR*/
            /*TEM QUE TRATAR PARA VER DE TER NO MINIMO X TERMOS*/
-           sleep(2);
-           printf("\33[H\33[2J");
+           //sleep(2);
+           //printf("\33[H\33[2J");
            do{
-             cabecalho(2);
+             //cabecalho(2);
              j=-1;
              do{   					 								    /*ateh dar enter*/  
 			   j++;
@@ -280,10 +285,10 @@ menu:
 		        id=separa_id(entrada);
 		        resposta=delete_ID(id,vertices,grafo,nodos); 
 			    if(resposta==1){
-				   printf("{\"delete\":{\"ID\":%d,\"resposta\":\"sucesso\"}}",id);
+				   printf("{\"delete\":{\"ID\":%d,\"resposta\":\"sucesso\"}}\n",id);
 				}
 				else{
-				   printf("{\"delete\":{\"ID\":%d,\"resposta\":\"falha\"}}",id);
+				   printf("{\"delete\":{\"ID\":%d,\"resposta\":\"falha\"}}\n",id);
 				}
 			 }//fim delete_id
 		     if(strstr(entrada,"vizinhos")){    
@@ -291,10 +296,10 @@ menu:
 		        id=separa_id(entrada);
 		        resposta=vizinhos_ID(id,vertices,grafo,string);
 		        if(resposta==1){
-				   printf("{\"vizinhos\":{\"ID\":%d, \"resposta\":\"sucesso\", \"vizinhos\":[%s]}}",id,string);
+				   printf("{\"vizinhos\":{\"ID\":%d, \"resposta\":\"sucesso\", \"vizinhos\":[%s]}}\n",id,string);
 				}
 				else{
-				   printf("{\"vizinhos\":{\"ID\":%d, \"resposta\":\"falha\", \"vizinhos\":[]}}",id);
+				   printf("{\"vizinhos\":{\"ID\":%d, \"resposta\":\"falha\", \"vizinhos\":[]}}\n",id);
 				}
 		     }//fim vizinhos
              if(strstr(entrada,"conexao")){
@@ -302,10 +307,10 @@ menu:
 		        separa_id_id(entrada,&v1,&v2);
 		        resposta=conexao(v1,v2,vertices,grafo);
 			    if(resposta==1){
-				   printf("{\"conexao\":{\"ID1\":%d, \"ID2\":%d, \"resposta\":\"sucesso\", \"conexao\":\"sim\"}}",v1,v2);
+				   printf("{\"conexao\":{\"ID1\":%d, \"ID2\":%d, \"resposta\":\"sucesso\", \"conexao\":\"sim\"}}\n",v1,v2);
 				}
 				else{
-				   printf("{\"conexao\":{\"ID1\":%d, \"ID2\":%d, \"resposta\":\"falha\", \"conexao\":\"\"}}",v1,v2);
+				   printf("{\"conexao\":{\"ID1\":%d, \"ID2\":%d, \"resposta\":\"falha\", \"conexao\":\"\"}}\n",v1,v2);
 				}
 			 }//fim conexo
              if(strstr(entrada,"ordemtopologica")){
@@ -313,14 +318,32 @@ menu:
 				string[0]='\0';
 			    lista=adjacencia(lista,grafo,vertices);
 			    resposta=ordem_t(grafo,lista,nodos,string,vertices);
+			     if(resposta==1){
+				   printf("{\"ordemtop\":%s}\n",string);
+				 }
+				 else{
+				   printf("{\"ordemtop\":falha}\n");
+				 }
 			     
 			 }
-          
-          
-          
-          
-             sleep(2);
-             printf("\33[H\33[2J");
+             if(strstr(entrada,"arvoreminima")){
+			    resposta=0; 
+				custo=0;
+				string[0]='\0';
+			    resposta=arvoreminima(grafo,nodos,string,vertices,custo);
+			     if(resposta==1){
+				   printf("{\"arvoreminima\":{\"arestas\":[%s],\"custo\":%d}}\n",string,custo);
+				   //[(1,2),(2,0),(1,0)]
+				 }
+				 else{
+				   printf("{\"arvoreminima\":falha}\n");
+				 }
+			 
+			 }         
+             
+             
+             //sleep(2);
+             //printf("\33[H\33[2J");
            }while(1);
            break;          
      default:

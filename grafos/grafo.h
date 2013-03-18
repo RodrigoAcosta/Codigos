@@ -12,6 +12,7 @@ typedef char info;
 typedef struct nome_vertices{
 	info nome[255];
 	int ini;                                                            /*saber se aquele vertice foi inicializado*/ 
+	int del;                                                            /*1-foi deletado, para poder verificar de grafo eh conexo*/
 }NOME_VERTICES;
 
 typedef struct matriz{
@@ -23,6 +24,14 @@ typedef struct lista_adjacencia{
 	int id;
 	int chegam;	
 }LISTA_ADJACENCIA;
+
+typedef struct pesos{
+	int peso;
+	int de;
+	int para;
+	struct pesos *prox;
+	
+}PESOS;
 
 
 /*grafo estrutura grafo[linha][coluna]*/
@@ -43,7 +52,9 @@ int delete_ID(int id,int tamanho,MATRIZ **nodo,NOME_VERTICES nodos[]);  /*deleta
 int vizinhos_ID(int id,int tamanho,MATRIZ **nodo,char string[]);        /*devolve string a ser impressa com todos os vizinhos*/
 int conexao(int id1,int id2,int tamanho,MATRIZ **nodo);                 /*verifica uma ligacao doreta entra dois vertices*/
 int ordem_t(MATRIZ **nodo,LISTA_ADJACENCIA *lista,NOME_VERTICES *vet,char string[],int tamanho);/*devolve string com a ordem topologica do grafo*/ 
+int arvoreminima(MATRIZ **nodo,NOME_VERTICES *vet,char string[],int tamanho,int custo);
 LISTA_ADJACENCIA* adjacencia(LISTA_ADJACENCIA *lista,MATRIZ **nodo,int tamanho);/*gera a lista de adjacencia de cada vertice*/
+LISTA_ADJACENCIA* ordenar(LISTA_ADJACENCIA *lista,int tamanho);         /*ordenar por nodos chegando a cada vertice*/
 
 
 #endif
